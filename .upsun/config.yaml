@@ -1,0 +1,20 @@
+applications:
+  app:
+    type: "nodejs:20"
+    relationships:
+      cache: "cache:redis"
+    web:
+      commands:
+        start: "node server.js"
+
+services:
+  cache:
+    type: redis:7.0
+
+routes:
+  "https://{default}/":
+    type: upstream
+    upstream: "app:http"
+  "https://www.{default}/":
+    type: redirect
+    to: "https://{default}/"
